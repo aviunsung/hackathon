@@ -1,7 +1,7 @@
 package hackathon.bot.application;
 
-import java.text.DateFormat;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import org.slf4j.Logger;
@@ -10,6 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import hackathon.bot.application.model.Feedback;
+import hackathon.bot.application.model.Question;
 
 /**
  * Handles requests for the application home page.
@@ -23,17 +27,18 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
+	public @ResponseBody Feedback home(Locale locale, Model model) {
 		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
-		
-		return "home";
+		Feedback feedback=new Feedback();
+		feedback.setParticipantName("Avinash");
+		feedback.setEmailId("avibokaro@gmail.com");
+		List<Question>questions=new ArrayList<Question>();
+		Question question=new Question();
+		question.setQuestion("How would you rate?");
+		question.setAnswer("3");
+		questions.add(question);
+		feedback.setQuestions(questions);
+		return feedback;
 	}
 	
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feedbacks>
+	<feedback>
+		<emailId>avibokaro@gmail.com</emailId>
+		<participantName>Avinash</participantName>
+		<questions>
+			<question>How would you rate?</question>
+			<answer>3</answer>
+			<question>Any comments?</question>
+			<answer>event was good</answer>
+		</questions>
+	</feedback>
+	<feedback>
+		<emailId>avibokaro@gmail.com</emailId>
+		<participantName>Avinash</participantName>
+		<questions>
+			<question>How would you rate?</question>
+			<answer>5</answer>
+			<question>Any comments?</question>
+			<answer>event was good</answer>
+		</questions>
+	</feedback>
+	<feedback>
+		<emailId>avibokaro@gmail.com</emailId>
+		<participantName>Avinash</participantName>
+		<questions>
+			<question>How would you rate?</question>
+			<answer>2</answer>
+			<question>Any comments?</question>
+			<answer>event was good</answer>
+		</questions>
+	</feedback>
+</feedbacks>
