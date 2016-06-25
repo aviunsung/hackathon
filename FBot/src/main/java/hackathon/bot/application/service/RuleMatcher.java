@@ -71,7 +71,7 @@ public final class RuleMatcher {
 	}
 
 	public static RuleMatcherResultEnum sendMail(String inputText) {
-		if(BotUtil.checkOccurence(inputText, "mail") && ((BotUtil.checkOccurence(inputText, BotApplicationConstant.goodSemantics)||BotUtil.checkOccurence(BotChat.userInputs.get(BotChat.userInputs.size()-1),BotApplicationConstant.goodSemantics))){
+		if(BotUtil.checkOccurence(inputText, "mail") && ((BotUtil.checkOccurence(inputText, BotApplicationConstant.goodSemantics)||BotUtil.checkOccurence(BotChat.userInputs.get(BotChat.userInputs.size()-1),BotApplicationConstant.goodSemantics)))){
 			return RuleMatcherResultEnum.MAIL;
 		}
 		return RuleMatcherResultEnum.NONE;
