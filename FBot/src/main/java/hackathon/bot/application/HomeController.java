@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import hackathon.bot.application.model.Feedback;
-import hackathon.bot.application.model.Question;
+import hackathon.bot.application.model.Feedbacks;
+import hackathon.bot.application.model.QuestionAnswer;
 
 /**
  * Handles requests for the application home page.
@@ -27,18 +28,22 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public @ResponseBody Feedback home(Locale locale, Model model) {
+	public @ResponseBody Feedbacks home(Locale locale, Model model) {
 		
 		Feedback feedback=new Feedback();
 		feedback.setParticipantName("Avinash");
 		feedback.setEmailId("avibokaro@gmail.com");
-		List<Question>questions=new ArrayList<Question>();
-		Question question=new Question();
+		List<QuestionAnswer>questions=new ArrayList<QuestionAnswer>();
+		QuestionAnswer question=new QuestionAnswer();
 		question.setQuestion("How would you rate?");
 		question.setAnswer("3");
 		questions.add(question);
 		feedback.setQuestions(questions);
-		return feedback;
+		List<Feedback>feedbacks=new ArrayList<Feedback>();
+		feedbacks.add(feedback);
+		Feedbacks feedbacks2=new Feedbacks();
+		feedbacks2.setFeedbacks(feedbacks);
+		return feedbacks2;
 	}
 	
 }

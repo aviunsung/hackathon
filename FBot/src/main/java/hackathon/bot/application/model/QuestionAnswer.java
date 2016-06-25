@@ -9,8 +9,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author avinash
  *
  */
-@XmlRootElement
-public class Question {
+@XmlRootElement(name="QuestionAnswer")
+public class QuestionAnswer {
 private String question;
 private String answer;
 public String getQuestion() {
@@ -27,6 +27,6 @@ public void setAnswer(String answer) {
 }
 @Override
 public String toString() {
-	return "Question [question=" + question + ", answer=" + answer + "]";
+	return "QuestionAnswer [question=" + question + ", answer=" + answer + "]";
 }
 }

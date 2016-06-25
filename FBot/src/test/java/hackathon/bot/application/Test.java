@@ -6,8 +6,7 @@ public class Test {
 
 	@org.junit.Test
 	public void test() {
-		XmlDAO xmlDAO=new XmlDAO();
-		System.out.println(xmlDAO.fetchAllFeedbacks());
+		System.out.println(XmlDAO.INSTANCE.fetchAllFeedbacks());
 	}
 
 }
