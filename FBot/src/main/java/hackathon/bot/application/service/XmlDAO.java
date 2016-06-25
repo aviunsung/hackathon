@@ -18,7 +18,7 @@ import hackathon.bot.application.model.Feedbacks;
  *
  */
 public class XmlDAO implements DAO {
-
+    
 	public static final DAO INSTANCE=new XmlDAO();
 	private XmlDAO(){}
 	/* (non-Javadoc)
@@ -31,8 +31,8 @@ public class XmlDAO implements DAO {
 
 			JAXBContext jaxbContext = JAXBContext.newInstance(Feedbacks.class);
 			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-			//We had written this file in marshalling example
-			feedbacks = (Feedbacks) jaxbUnmarshaller.unmarshal( new File("input2.xml") );
+		//	feedbacks = (Feedbacks) jaxbUnmarshaller.unmarshal( new File("input2.xml") );
+			feedbacks = (Feedbacks) jaxbUnmarshaller.unmarshal(XmlDAO.class.getClassLoader().getResourceAsStream("input2.xml"));
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}

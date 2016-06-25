@@ -6,6 +6,7 @@ import java.util.List;
 
 import hackathon.bot.application.model.BotApplicationConstant;
 import hackathon.bot.application.model.Feedback;
+import hackathon.bot.application.model.ProcessedResult;
 import hackathon.bot.application.model.QuestionAnswer;
 import hackathon.bot.application.model.QuestionConstant;
 import hackathon.bot.application.model.RuleMatcherResultEnum;
@@ -17,15 +18,17 @@ public class BotInputProcessor {
 	private static HashMap<Integer,List<Feedback>> feedbackCountMap=new HashMap<Integer,List<Feedback>>();
 	List<Feedback>goodFeedbacks=new ArrayList<Feedback>();
 
-	public Object process(String userInput){
-		Object result=processRules(userInput);
+	public ProcessedResult process(String userInput){
+		ProcessedResult result=processRules(userInput);
 		if(result==null){
-			return RuleMatcherResultEnum.SORRY_CANT_UNDERSTAND;
+			ProcessedResult processedResult=new ProcessedResult();
+			processedResult.setResult(RuleMatcherResultEnum.SORRY_CANT_UNDERSTAND);
+			return processedResult;
 		}
 		return result;
 	}
 
-	private Object processRules(String userInput) {
+	private ProcessedResult processRules(String userInput) {
 		List<RuleMatcherResultEnum>results=new ArrayList<RuleMatcherResultEnum>();
 		validate(RuleMatcher.isMaxRating(userInput),results);	
 		validate(RuleMatcher.countMaxRating(userInput),results);
@@ -36,35 +39,60 @@ public class BotInputProcessor {
 		validate(RuleMatcher.countRating(userInput),results);
 		validate(RuleMatcher.goodComments(userInput),results);
 		validate(RuleMatcher.sendMail(userInput),results);
-
+		ProcessedResult processedResult=null;
 		if(!results.isEmpty()){
-			switch (results.get(results.size()-1)) {
-			case COUNT_MAX_RATING:
-				return getCountRating(5);
-			case PEOPLE_MAX_RATING:
-				return getPeopleWithRating(5);
-			case COUNT_MIN_RATING:
-				return getCountRating(1);
-			case PEOPLE_MIN_RATING:
-				return getPeopleWithRating(1);
-			case COUNT_RATING:
-				if(BotUtil.checkOccurenceAndReturnKeyword(userInput, BotApplicationConstant.ratings)!=null){
-					return getCountRating(Integer.valueOf(BotUtil.checkOccurenceAndReturnKeyword(userInput, BotApplicationConstant.ratings)));
-				}else{
-					return RuleMatcherResultEnum.SORRY_CANT_UNDERSTAND;
-				}
-			case GOOD_COMMENTS:
-				return getGoodComments();
-			case MAIL:
-				return sendMail();
-			default:
-				return RuleMatcherResultEnum.SORRY_CANT_UNDERSTAND;
-			}
+			processedResult= processRuleMatcherResult(results.get(results.size()-1),userInput);
 		}
-		return null;
+		return processedResult;
+	}
+
+	public ProcessedResult processRuleMatcherResult(RuleMatcherResultEnum ruleMatcherResultEnum,String userInput) {
+		ProcessedResult processedResult=new ProcessedResult();
+		switch (ruleMatcherResultEnum) {
+		case COUNT_MAX_RATING:
+			processedResult.setInput(RuleMatcherResultEnum.COUNT_MAX_RATING);
+			processedResult.setResult(getCountRating(5));
+			break;
+		case PEOPLE_MAX_RATING:
+			processedResult.setInput(RuleMatcherResultEnum.PEOPLE_MAX_RATING);
+			processedResult.setResult(getPeopleWithRating(5));
+			break;
+		case COUNT_MIN_RATING:
+			processedResult.setInput(RuleMatcherResultEnum.COUNT_MIN_RATING);
+			processedResult.setResult(getCountRating(1));
+			break;
+		case PEOPLE_MIN_RATING:
+			processedResult.setInput(RuleMatcherResultEnum.PEOPLE_MIN_RATING);
+			processedResult.setResult(getPeopleWithRating(1));
+			break;
+		case COUNT_RATING:
+			processedResult.setInput(RuleMatcherResultEnum.COUNT_RATING);
+			if(BotUtil.checkOccurenceAndReturnKeyword(userInput, BotApplicationConstant.ratings)!=null){
+				processedResult.setResult(getCountRating(Integer.valueOf(BotUtil.checkOccurenceAndReturnKeyword(userInput, BotApplicationConstant.ratings))));
+			}else{
+				processedResult.setResult(RuleMatcherResultEnum.SORRY_CANT_UNDERSTAND);
+			}
+			break;
+		case GOOD_COMMENTS:
+			processedResult.setInput(RuleMatcherResultEnum.GOOD_COMMENTS);
+			processedResult.setResult(getGoodComments());
+			break;
+		case MAIL:
+			processedResult.setInput(RuleMatcherResultEnum.MAIL);
+			processedResult.setResult(sendMail());
+			processedResult.setMessage("Sending Mail....");
+			break;
+		default:
+			processedResult.setResult(RuleMatcherResultEnum.SORRY_CANT_UNDERSTAND);
+			break;
+		}
+		return processedResult;
 	}
 
 	private Object sendMail() {
+		if(goodFeedbacks.isEmpty()){
+			getGoodComments();
+		}
 		for (Feedback feedback : goodFeedbacks) {
 			SendMailService.sendOutlookMail(feedback.getEmailId(), "We were glad that you liked our event", "e-Zest Hackathon 2016");
 		}
