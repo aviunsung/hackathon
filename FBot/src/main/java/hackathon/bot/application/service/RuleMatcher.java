@@ -3,6 +3,7 @@
  */
 package hackathon.bot.application.service;
 
+import hackathon.bot.application.BotChat;
 import hackathon.bot.application.model.BotApplicationConstant;
 import hackathon.bot.application.model.RuleMatcherResultEnum;
 import hackathon.bot.application.util.BotUtil;
@@ -58,6 +59,20 @@ public final class RuleMatcher {
 	public static RuleMatcherResultEnum countRating(String inputText){
 		if(BotUtil.checkOccurence(inputText, "count") && BotUtil.checkOccurence(inputText, BotApplicationConstant.ratings)){
 			return RuleMatcherResultEnum.COUNT_RATING;
+		}
+		return RuleMatcherResultEnum.NONE;
+	}
+
+	public static RuleMatcherResultEnum goodComments(String inputText){
+		if(BotUtil.checkOccurence(inputText, "comment") && BotUtil.checkOccurence(inputText, BotApplicationConstant.goodSemantics)){
+			return RuleMatcherResultEnum.GOOD_COMMENTS;
+		}
+		return RuleMatcherResultEnum.NONE;
+	}
+
+	public static RuleMatcherResultEnum sendMail(String inputText) {
+		if(BotUtil.checkOccurence(inputText, "mail") && ((BotUtil.checkOccurence(inputText, BotApplicationConstant.goodSemantics)||BotUtil.checkOccurence(BotChat.userInputs.get(BotChat.userInputs.size()-1),BotApplicationConstant.goodSemantics))){
+			return RuleMatcherResultEnum.MAIL;
 		}
 		return RuleMatcherResultEnum.NONE;
 	}

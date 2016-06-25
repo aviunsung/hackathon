@@ -15,7 +15,7 @@ public class SendMailService {
 	private static final String username = "alok.kumar@vuclip.com";
 	private static final String password = "@mit27MAY";
 
-	public void sendOutlookMail(String to, String msg, String subject) {
+	public static void sendOutlookMail(String to, String msg, String subject) {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");

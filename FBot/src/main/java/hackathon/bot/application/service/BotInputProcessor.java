@@ -15,6 +15,8 @@ public class BotInputProcessor {
 	public static final BotInputProcessor INSTANCE=new BotInputProcessor();
 	private BotInputProcessor(){}
 	private static HashMap<Integer,List<Feedback>> feedbackCountMap=new HashMap<Integer,List<Feedback>>();
+	List<Feedback>goodFeedbacks=new ArrayList<Feedback>();
+
 	public Object process(String userInput){
 		Object result=processRules(userInput);
 		if(result==null){
@@ -32,6 +34,8 @@ public class BotInputProcessor {
 		validate(RuleMatcher.countMinRating(userInput),results);
 		validate(RuleMatcher.getPeopleGivenMinRating(userInput),results);
 		validate(RuleMatcher.countRating(userInput),results);
+		validate(RuleMatcher.goodComments(userInput),results);
+		validate(RuleMatcher.sendMail(userInput),results);
 
 		if(!results.isEmpty()){
 			switch (results.get(results.size()-1)) {
@@ -49,11 +53,46 @@ public class BotInputProcessor {
 				}else{
 					return RuleMatcherResultEnum.SORRY_CANT_UNDERSTAND;
 				}
+			case GOOD_COMMENTS:
+				return getGoodComments();
+			case MAIL:
+				return sendMail();
 			default:
 				return RuleMatcherResultEnum.SORRY_CANT_UNDERSTAND;
 			}
 		}
 		return null;
+	}
+
+	private Object sendMail() {
+		for (Feedback feedback : goodFeedbacks) {
+			SendMailService.sendOutlookMail(feedback.getEmailId(), "We were glad that you liked our event", "e-Zest Hackathon 2016");
+		}
+		return null;
+	}
+
+	private Object getGoodComments() {
+		if(goodFeedbacks.isEmpty()){
+			List<Feedback>feedbacks=XmlDAO.INSTANCE.fetchAllFeedbacks();
+			for (Feedback feedback : feedbacks) {
+				for (QuestionAnswer questionAnswer : feedback.getQuestions()) {
+					if(questionAnswer.getQuestion()!=null && questionAnswer.getQuestion().equalsIgnoreCase(QuestionConstant.COMMENTS)){
+						//fetch comments
+						if(questionAnswer.getAnswer()!=null){
+							if(isGoodComment(questionAnswer.getAnswer())){
+								goodFeedbacks.add(feedback);
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		return goodFeedbacks;
+	}
+
+	private boolean isGoodComment(String answer) {
+		return BotUtil.checkOccurence(answer, BotApplicationConstant.goodSemantics);
 	}
 
 	private Object getPeopleWithRating(int rating) {
