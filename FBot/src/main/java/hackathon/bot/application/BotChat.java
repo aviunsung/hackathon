@@ -23,6 +23,7 @@ public class BotChat {
 		String line=null;
 		while(true){
 			line=scanner.nextLine();
+			line=line.toLowerCase();
 			userInputs.add(line);
 			if(line.equalsIgnoreCase("exit")){
 				break;
