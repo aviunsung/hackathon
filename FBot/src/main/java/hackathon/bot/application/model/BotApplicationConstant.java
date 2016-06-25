@@ -12,5 +12,6 @@ public class BotApplicationConstant {
 	public static final String[]goodSemantics={"good","nice","pleasant","positive"};
 	public static final String[]yes={"yes","yeah","ok","sure"};
 	public static final String[]no={"no","nop","not","later"};
+	public static final String[]hello={"hi","hello","wasuup","good morning"};
 
 }

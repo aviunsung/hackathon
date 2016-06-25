@@ -96,7 +96,7 @@ public class BotInputProcessor {
 		for (Feedback feedback : goodFeedbacks) {
 			SendMailService.sendOutlookMail(feedback.getEmailId(), "We were glad that you liked our event", "e-Zest Hackathon 2016");
 		}
-		return null;
+		return "Mail sent successfully !!!";
 	}
 
 	private Object getGoodComments() {
@@ -131,7 +131,7 @@ public class BotInputProcessor {
 					if(questionAnswer.getQuestion()!=null && questionAnswer.getQuestion().equalsIgnoreCase(QuestionConstant.RATING_QUES)){
 						//fetch existing list of feedbacks
 						Integer ratingFromAnswer=Integer.valueOf(questionAnswer.getAnswer());
-						List<Feedback>feedbacksOfRating=feedbackCountMap.get(rating);
+						List<Feedback>feedbacksOfRating=feedbackCountMap.get(ratingFromAnswer);
 						if(feedbacksOfRating==null){
 							feedbacksOfRating=new ArrayList<Feedback>();
 						}

@@ -1,5 +1,8 @@
 package hackathon.bot.application.service;
 
+import hackathon.bot.application.model.BotApplicationConstant;
+import hackathon.bot.application.util.BotUtil;
+
 import com.skype.ChatMessage;
 import com.skype.ChatMessageAdapter;
 import com.skype.Skype;
@@ -31,10 +34,9 @@ public class SendChatMessage {
 	
 	public static void main(String[] args) throws Exception {
 		 System.out.println("Start Auto Answering ...");
-         
-	        // To prevent exiting from this program
+
+		 // To prevent exiting from this program
 	        Skype.setDaemon(false);
-	         
 	         
 	        Skype.addChatMessageListener(new ChatMessageAdapter() {
 	            public void chatMessageReceived(ChatMessage received)
@@ -44,18 +46,24 @@ public class SendChatMessage {
 	                    // Sender
 	                    User sender =received.getSender();    
 	                     
-	                    System.out.println(sender.getId() +" say:");
+	                    System.out.print(sender.getId() +" say:");
 	                    System.out.println(" "+received.getContent() );
 	                     
-	                    received.getSender().send(
-	                            "I'm working. Please, wait a moment.");
+	                   
 	                     
-	                    System.out.println(" - Auto answered!");
 	                    if(received.getContent()!=null || received.getContent().trim().length()>0){
-	                    	System.out.println("Inside BotInputProcessor Call");
-	                    	Object object = BotInputProcessor.INSTANCE.process(received.getContent());
-	                    	System.out.println("Object Value : "+object);
-	                    	received.getSender().send(object.toString());
+	                    	if(BotUtil.checkOccurence(received.getContent().toLowerCase(), BotApplicationConstant.hello)){
+	                    		received.getSender().send("Hello "+ sender.getFullName());
+	                    	}else{
+	                    		received.getSender().send("I'm working. Please, wait a moment.");
+	                    		System.out.println("Inside BotInputProcessor Call");
+	                    		Object object = BotInputProcessor.INSTANCE.process(received.getContent().toLowerCase());
+	                    		System.out.println("Object Value : "+object);
+	                    		if(object !=null){
+	                    			received.getSender().send(object.toString());
+	                    		}
+	                    	}
+	                    	
 	                    }
 	                }
 	            }
@@ -63,6 +71,10 @@ public class SendChatMessage {
 	         
 	         
 	        System.out.println("Auto Answering started!");
+	}
+	
+	public String formattedText(Object object){
+		return null;
 	}
 
 }

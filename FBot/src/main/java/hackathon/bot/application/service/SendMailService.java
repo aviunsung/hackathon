@@ -15,7 +15,7 @@ public class SendMailService {
 	private static final String username = "alok.kumar@vuclip.com";
 	private static final String password = "@mit27MAY";
 
-	public static void sendOutlookMail(String to, String msg, String subject) {
+	public static String sendOutlookMail(String to, String msg, String subject) {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
@@ -40,10 +40,11 @@ public class SendMailService {
 			Transport.send(message);
 
 			System.out.println("Done");
-
+			return "Mail sent successfully !!!";
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			e.printStackTrace();
 		}
+		return "Couldn't Sent Mail.";
 	}
 
 	public static void main(String[] args) {

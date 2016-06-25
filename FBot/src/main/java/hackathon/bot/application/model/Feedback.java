@@ -41,6 +41,6 @@ public class Feedback {
 	}
 	@Override
 	public String toString() {
-		return "Feedback [participantName=" + participantName + ", emailId=" + emailId + ", questions=" + questions + "]";
+		return "Feedback of participant : " + participantName + " with emailId : " + emailId + " \n All list of questions : \n" + questions;
 	}
 }

@@ -42,6 +42,6 @@ public class ProcessedResult {
 
 	@Override
 	public String toString() {
-		return "ProcessedResult [result=" + result + ", input=" + input + "]";
+		return String.valueOf(result);
 	}
 }

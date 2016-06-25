@@ -27,6 +27,6 @@ public void setAnswer(String answer) {
 }
 @Override
 public String toString() {
-	return "QuestionAnswer [question=" + question + ", answer=" + answer + "]";
+	return "-> Question : " + question + " \n ---> Answer : " + answer + "\n";
 }
 }
